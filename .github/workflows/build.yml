@@ -21,11 +21,14 @@ jobs:
       run: |
         sudo apt update
         sudo apt install -y ccache git libffi-dev libssl-dev build-essential python3-dev libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev zlib1g-dev openjdk-17-jdk autoconf libtool pkg-config
-        pip install --upgrade buildozer cython
+        pip install --upgrade pip
+        pip install "cython<3.0.0" buildozer
 
-    - name: Build APK with Buildozer
+    - name: Accept Android Licenses & Build APK
       run: |
-        buildozer -v android debug
+        mkdir -p ~/.android
+        touch ~/.android/repositories.cfg
+        yes | buildozer -v android debug
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
